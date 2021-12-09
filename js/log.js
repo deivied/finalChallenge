@@ -5,41 +5,25 @@ const functionModule = require('./lib/funcApi');
 //Affectations
 const TransactionDate = document.querySelector("#datLog");
 const TransactionObjet = document.querySelector("#transLog");
-const code1 = document.querySelector("#codeLog");
 const debit1 = document.querySelector("#debitLog");
 const credit1 = document.querySelector("#creditLog");
-const code2 = document.querySelector("#codeLogDeux");
 const debit2 = document.querySelector("#debitLogDeux");
 const credit2 = document.querySelector("#creditLogDeux");
-const table = document.querySelector("#tbl");
-const tbody = document.querySelector("#tbody");
 const button = document.querySelector("#btn");
 const inputCodeUn = document.querySelector("#codeUn");
 const inputCodeDue = document.querySelector("#codeDue");
 
-const p1 = document.querySelector('#somme1')
-const p2 = document.querySelector('#somme2')
 
 let trsDate;
 let trsObjet;
 let codeUn;
 let codeDue;
-let creshUn;
-let creshDue, cresh;
-let debUn;
-let debDue, deb;
-let sumDeb;
-let sumCresh;
-let entree = [];
-let sumTime = [];
-let dataList = [];
-let id, idSum, idEntre;
-let data = localStorage.listeCompte;
-let dataSum = localStorage.credeb;
-let dataLog = localStorage.listeLog;
-let cress = 0;
-let debs = 0;
-console.log(dataLog)
+let cresh;
+let  deb;
+
+
+
+console.log(localStorage.getItem("listeLog"))
 
 
 
@@ -127,13 +111,11 @@ button.addEventListener('click', () => {
   if (TransactionDate.value && TransactionObjet.value && inputCodeDue.value && inputCodeUn.value) {
     functionModule.addLogDataToTable(trsDate, codeUn, codeDue, trsObjet, deb, cresh);
     functionModule.addSumTable(deb, cresh);
-    sumTime.push({
-      id: idSum,
+    functionModule.sumTime.push({
       debit: deb,
       credit: cresh
     });
-    entree.push({
-      id: idEntre,
+    functionModule.entree.push({
       date: trsDate,
       ObjetTraansac: trsObjet,
       code1: codeUn,
@@ -141,14 +123,12 @@ button.addEventListener('click', () => {
       debit: deb,
       credit: cresh
     });
-    localStorage.setItem("listeLog", JSON.stringify(entree));
-    localStorage.setItem("listeSum", JSON.stringify(sumTime));
-    idEntre++;
-    idSum++;
-    functionModule.pushDataList();
+    localStorage.setItem("listeLog", JSON.stringify(functionModule.entree));
+    localStorage.setItem("listeSum", JSON.stringify(functionModule.sumTime));
   }
   else {
     alert('Veuiller remplir tous les champs');
     functionModule.clearInput();
   }
+  functionModule.clearInput();
 });

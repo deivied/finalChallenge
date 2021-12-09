@@ -464,39 +464,20 @@ const functionModule = require('./lib/funcApi');
 //Affectations
 const TransactionDate = document.querySelector("#datLog");
 const TransactionObjet = document.querySelector("#transLog");
-const code1 = document.querySelector("#codeLog");
 const debit1 = document.querySelector("#debitLog");
 const credit1 = document.querySelector("#creditLog");
-const code2 = document.querySelector("#codeLogDeux");
 const debit2 = document.querySelector("#debitLogDeux");
 const credit2 = document.querySelector("#creditLogDeux");
-const table = document.querySelector("#tbl");
-const tbody = document.querySelector("#tbody");
 const button = document.querySelector("#btn");
 const inputCodeUn = document.querySelector("#codeUn");
 const inputCodeDue = document.querySelector("#codeDue");
-const p1 = document.querySelector('#somme1');
-const p2 = document.querySelector('#somme2');
 let trsDate;
 let trsObjet;
 let codeUn;
 let codeDue;
-let creshUn;
-let creshDue, cresh;
-let debUn;
-let debDue, deb;
-let sumDeb;
-let sumCresh;
-let entree = [];
-let sumTime = [];
-let dataList = [];
-let id, idSum, idEntre;
-let data = localStorage.listeCompte;
-let dataSum = localStorage.credeb;
-let dataLog = localStorage.listeLog;
-let cress = 0;
-let debs = 0;
-console.log(dataLog);
+let cresh;
+let deb;
+console.log(localStorage.getItem("listeLog"));
 functionModule.getLogValue();
 functionModule.pushDataList();
 //Verifier si le localStorage contient des donnees et
@@ -570,13 +551,11 @@ button.addEventListener('click', ()=>{
     if (TransactionDate.value && TransactionObjet.value && inputCodeDue.value && inputCodeUn.value) {
         functionModule.addLogDataToTable(trsDate, codeUn, codeDue, trsObjet, deb, cresh);
         functionModule.addSumTable(deb, cresh);
-        sumTime.push({
-            id: idSum,
+        functionModule.sumTime.push({
             debit: deb,
             credit: cresh
         });
-        entree.push({
-            id: idEntre,
+        functionModule.entree.push({
             date: trsDate,
             ObjetTraansac: trsObjet,
             code1: codeUn,
@@ -584,20 +563,38 @@ button.addEventListener('click', ()=>{
             debit: deb,
             credit: cresh
         });
-        localStorage.setItem("listeLog", JSON.stringify(entree));
-        localStorage.setItem("listeSum", JSON.stringify(sumTime));
-        idEntre++;
-        idSum++;
-        functionModule.pushDataList();
+        localStorage.setItem("listeLog", JSON.stringify(functionModule.entree));
+        localStorage.setItem("listeSum", JSON.stringify(functionModule.sumTime));
     } else {
         alert('Veuiller remplir tous les champs');
         functionModule.clearInput();
     }
+    functionModule.clearInput();
 });
 
 },{"./lib/funcApi":"2MjM1"}],"2MjM1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "data", ()=>data
+);
+parcelHelpers.export(exports, "dataSum", ()=>dataSum
+);
+parcelHelpers.export(exports, "dataLog", ()=>dataLog
+);
+parcelHelpers.export(exports, "entree", ()=>entree
+);
+parcelHelpers.export(exports, "sumTime", ()=>sumTime
+);
+//Partie Concernant le tableeau du logSystem
+//Fonction D'ajout de donnes storage dans la table de la page
+parcelHelpers.export(exports, "tableEntree", ()=>tableEntree
+);
+parcelHelpers.export(exports, "addLogDataToTable", ()=>addLogDataToTable
+);
+parcelHelpers.export(exports, "getLogValue", ()=>getLogValue
+);
+//Partie concernant comment link la page1.input a la page2.datalist:
+//Le datalist
 parcelHelpers.export(exports, "pushDataList", ()=>pushDataList
 );
 parcelHelpers.export(exports, "loadDataToList", ()=>loadDataToList
@@ -611,51 +608,28 @@ parcelHelpers.export(exports, "addSumTable", ()=>addSumTable
 parcelHelpers.export(exports, "credebSum", ()=>credebSum
 );
 //fin  somme credit et debit dans le tableau
-//Fonction D'ajout de donnes storage dans la table de la page
-parcelHelpers.export(exports, "tableEntree", ()=>tableEntree
-);
-parcelHelpers.export(exports, "addLogDataToTable", ()=>addLogDataToTable
-);
 parcelHelpers.export(exports, "clearInput", ()=>clearInput
 );
-parcelHelpers.export(exports, "getLogValue", ()=>getLogValue
-);
-//Partie concernant comment link la page1.input a la page2.datalist:
-//Le datalist
+const TransactionDate = document.querySelector("#datLog");
+const TransactionObjet = document.querySelector("#transLog");
+const debit1 = document.querySelector("#debitLog");
+const credit1 = document.querySelector("#creditLog");
+const debit2 = document.querySelector("#debitLogDeux");
+const credit2 = document.querySelector("#creditLogDeux");
+const inputCodeUn = document.querySelector("#codeUn");
+const inputCodeDue = document.querySelector("#codeDue");
+const code1 = document.querySelector("#codeLog");
+const code2 = document.querySelector("#codeLogDeux");
+const p1 = document.querySelector('#somme1');
+const p2 = document.querySelector('#somme2');
+const tbody = document.querySelector("#tbody");
+let cress = 0;
+let debs = 0;
 let data = localStorage.listeCompte;
-let dataSum = localStorage.credeb;
-let dataLog = localStorage.listeLog;
-function pushDataList() {
-    if (data) {
-        dataList = JSON.parse(data);
-        // console.log(dataList)
-        loadDataToList(dataList);
-    } else {
-        dataList = [];
-        id = 0;
-    }
-}
-function loadDataToList(array) {
-    array.forEach(function(itemLog) {
-        addDataToList(itemLog.code);
-    });
-}
-function addDataToList(code) {
-    code1.innerHTML += `<option value="${code}"/>`;
-    code2.innerHTML += `<option value="${code}"/>`;
-    return console.log(`<option value="${code}">${code}</option>`);
-}
-function addSumTable(debit, credit) {
-    cress = parseInt(cress) + parseInt(credit);
-    debs = parseInt(debs) + parseInt(debit);
-    p1.textContent = debs;
-    p2.textContent = cress;
-}
-function credebSum(array) {
-    array.forEach((itemSum)=>{
-        addSumTable(itemSum.debit, itemSum.credit);
-    });
-}
+let dataSum;
+let dataLog;
+let entree = [];
+let sumTime = [];
 function tableEntree(array) {
     array.forEach(function(logItem) {
         addLogDataToTable(logItem.date, logItem.code1, logItem.code2, logItem.ObjetTraansac, logItem.debit, logItem.credit);
@@ -677,6 +651,56 @@ function addLogDataToTable(date, codeUn, codeDue, ObjetTraansac, debit, credit) 
     cell5.textContent = debit;
     cell6.textContent = credit;
 }
+async function getLogValue() {
+    try {
+        if (localStorage.listeLog) {
+            entree = JSON.parse(localStorage.getItem("listeLog"));
+            sumTime = JSON.parse(localStorage.getItem("listeSum"));
+            idEntre = entree.length;
+            idSum = sumTime.length;
+            tableEntree(entree);
+            credebSum(sumTime);
+        } else {
+            entree = [];
+            sumTime = [];
+            idEntre = 0;
+            idSum = 0;
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+function pushDataList() {
+    if (data) {
+        dataList = JSON.parse(data);
+        // console.log(dataList)
+        loadDataToList(dataList);
+    } else {
+        dataList = [];
+        id = 0;
+    }
+}
+function loadDataToList(array) {
+    array.forEach(function(itemLog) {
+        addDataToList(itemLog.code);
+    });
+}
+function addDataToList(code) {
+    code1.innerHTML += `<option value="${code}"/>`;
+    code2.innerHTML += `<option value="${code}"/>`;
+// return console.log(`<option value="${code}">${code}</option>`)
+}
+function addSumTable(debit, credit) {
+    cress = parseInt(cress) + parseInt(credit);
+    debs = parseInt(debs) + parseInt(debit);
+    p1.textContent = debs;
+    p2.textContent = cress;
+}
+function credebSum(array) {
+    array.forEach((itemSum)=>{
+        addSumTable(itemSum.debit, itemSum.credit);
+    });
+}
 function clearInput() {
     TransactionDate.value = "";
     TransactionObjet.value = "";
@@ -692,21 +716,6 @@ function clearInput() {
     debit2.value = "";
     credit1.value = "";
     credit2.value = "";
-}
-function getLogValue() {
-    if (dataLog) {
-        entree = JSON.parse(dataLog);
-        sumTime = JSON.parse(dataSum);
-        idEntre = entree.length;
-        idSum = sumTime.length;
-        tableEntree(entree);
-        credebSum(sumTime);
-    } else {
-        entree = [];
-        sumTime = [];
-        idEntre = 0;
-        idSum = 0;
-    }
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gOImj"}],"gOImj":[function(require,module,exports) {
