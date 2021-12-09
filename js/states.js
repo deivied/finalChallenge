@@ -4,98 +4,93 @@ import { onChange } from "./lib/module";
 const date1 = document.querySelector('#fdate');
 const date2 = document.querySelector('#ldate');
 const combo = document.querySelector('#ComboBox')
-const dateun = new List();
-const datedeux = new List();
-const comboarray = new List();
-const last = new List();
 const bouton = document.querySelector('#btn')
 const p1 = document.querySelector('#somme1')
 const p2 = document.querySelector('#somme2')
-let m = 0; let mm = 0; let mmm = 0;
+const tbody = document.querySelector('#tbody')
+
 //écoute des événements
-onChange(date1, dateun);
-onChange(date2, datedeux);
-onChange(combo, comboarray);
 
-bouton.addEventListener('click', function () {
+let dataState = JSON.parse(localStorage.listeLog);
+let dateRecup = [];
+let fdate;
+let ldate;
+let label;
+let dateFirt = [];
+let dateTwo = [];
+// console.log(JSON.parse(dataState));
 
+dataState.forEach(itemS => {
+    dateRecup.push(itemS.date);
+});
+// console.log(dateRecup);
 
-    let array1 = dateun._list[m];
-    let array2 = datedeux._list[mmm];
-    let array3 = comboarray._list[mm];
-    //transformation des stockages en tableaux
-    let tabb0 = window.localStorage.stockdate1.split(",");
-    let tabb1 = window.localStorage.label1.split(",");
-    let tabb2 = window.localStorage.debit.split(",");
-    let tabb3 = window.localStorage.credit.split(",");
-    let tabb4 = window.localStorage.label2.split(",");
-    let tabb5 = window.localStorage.stockdate2.split(",");
-
-    let totauxdebit = 0;
-    let totauxcredit = 0;
-    let ok = tabb2[m]
-    const tbody = document.querySelector('#tbody')
-
-    //conditions
-    if (array1 && array3) {
-
-        for (let i = 0; i < tabb0.length; i++) {
-            if (dateun._list[m] == tabb0[i] && comboarray._list[mm] == tabb1[i]) {
-                let debit = ok;
-                last.addElementToList(debit);
-                tbody.innerHTML += `
-    <tr>
-        <td>${dateun._list[m]}</td>
-        <td>${comboarray._list[mm]}</td>
-        <td>${debit}</td>
-        <td></td>
-    </tr>
-  `
-                p1.innerHTML = `${totauxdebit += parseInt(ok)}`;
-
-                console.log(totauxdebit, m, mm)
-                m++; mm++;
-
-            }
-
-        }
-
-
-    }
-    else if (array2 && array3) {
-        for (let y = 0; y < tabb5.length; y++) {
-            if (datedeux._list[mmm] == tabb5[y] && comboarray._list[mm] == tabb4[y]) {
-                let credit = tabb3[mmm];
-                console.log(credit)
-                tbody.innerHTML += `
-            <tr>
-                <td>${datedeux._list[mmm]}</td>
-                <td>${comboarray._list[mm]}</td>
-                <td></td>
-                <td>${credit}</td>
-            </tr>
-          `
-                p2.innerHTML = `${totauxcredit += parseInt(tabb5[mmm])}`;
-                mmm++; mm++;
-            }
-        }
-
-
-    }
-    else {
-        dateun._list.splice(m, 2)
-        datedeux._list.splice(mmm, 2)
-        comboarray.removeElement(comboarray._list, mm)
-        alert(`vous n'avez pas saisi les bonnes combinaisons, veuillez etre plus précis`)
-    }
-    //tentative de changement des couleurs
-    // if(totauxcredit < totauxdebit){
-    //   document.getElementsByTagName('span')[1].style.color='red';
-    // }
-    date1.value = "";
-    date2.value = "";
-    combo.value = "";
-
-
+date1.addEventListener('change', function (p) {
+    fdate = p.target.value;
+    console.log(fdate);
 })
+
+date1.addEventListener('change', function (t) {
+    ldate = t.target.value;
+    console.log(ldate);
+})
+
+combo.addEventListener('change', function (c) {
+    label = c.target.value;
+    console.log(label);
+})
+
+function addStateDataToTable(date, ObjetTraansac, debit, credit) {
+
+    const row = tbody.insertRow(-1);
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
+    const cell3 = row.insertCell(2);
+    const cell4 = row.insertCell(3);
+
+    //isertion des valeurs à un index donné dans les cellules
+    cell1.textContent = date;
+    cell2.textContent = ObjetTraansac;
+    cell3.textContent = debit;
+    cell4.textContent = credit;
+
+}
+
+bouton.addEventListener('click', function (event) {
+    if (date1.value && combo.value) {
+        dataState.forEach(function (itemStat) {
+            switch (itemStat.date) {
+                case date1.value:
+                    dateFirt = itemStat
+                    console.log(dateFirt);   
+                    addStateDataToTable(dateFirt.date, dateFirt.ObjetTraansac, dateFirt.debit, dateFirt.credit);          
+                break;
+
+                default:
+                    alert('La date un mise n\'existe pas');
+                    break;
+            }
+        })
+    }else if (date2.value && combo.value) {
+        dataState.forEach(function (itemStat) {
+            switch (itemStat.date) {
+                case date2.value:
+                    dateTwo = itemStat;
+                    console.log(dateTwo);   
+                    addStateDataToTable(dateTwo.date, dateFirt.ObjetTraansac, dateFirt.debit, dateFirt.credit);          
+                    break;
+
+                default:
+                    alert('La date deux mise n\'existe pas');
+                    break;
+            }
+        })
+    }
+});
+
+
+
+
+
+
 
