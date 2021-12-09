@@ -50,7 +50,6 @@ body{
 /* Parti concernannt fielset Account et le bouton de validation */
 /* Contenu de ".contenu" */
 .inserer{
-    border: 3px solid black;
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -61,14 +60,12 @@ body{
 /* Parti concernannt fielset Account et le bouton de validation */
 
 form{
-    border: 2px solid red;
     display: flex;
     width: 100%;
     justify-content: space-around;
     align-items: center;
 }
 .subfield{
-    border: 2px solid maroon;
     display: flex;
     flex-wrap: wrap;
     margin: auto;
@@ -76,7 +73,6 @@ form{
     justify-content: space-around;
 }
 .subfieldiv{
-    border: 1px solid yellow;
     padding-right: 50px;
 }
 

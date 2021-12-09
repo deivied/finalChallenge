@@ -43,13 +43,13 @@
 
                             <div class="blckInpDeux">
                                 <div>
-                                    <label for="codeLog">code:</label>
+                                    <label for="codeLog">code :</label>
                                     <input list="codeLog" name="codeLog" id="codeUn" autocomplete="off">
                                     <datalist id="codeLog">
                                     </datalist>
                                 </div>
                                 <div>
-                                    <label for="labelLog">Label :</label>
+                                    <label for="labelLog">Label :</label>
                                     <input type="text" disabled="disabled" id="labelLog" name="labelLog" max="20" min="4">
                                 </div>
                                 <div>
@@ -71,7 +71,7 @@
 
                                 </div>
                                 <div>
-                                    <label for="labelLogdeux">Label :</label>
+                                    <label for="labelLogdeux">Label :</label>
                                     <input type="text" disabled="disabled" id="labelLogDeux" name="labelLogDeux">
                                 </div>
                                 <div>
@@ -89,36 +89,37 @@
                         <input type="button" value="Add" class="btn" id="btn">
                     </div>
                 </form>
+                <div class="tab">
+                    <table class="tbl" id="tbl" border="2px">
+                        <thead>
+                            <tr>
+                                <th>Transaction Code</th>
+                                <th>Account Code(Débit)</th>
+                                <th>Account Code(Crédit)</th>
+                                <th>Transaction Objet</th>
+                                <th>Débit</th>
+                                <th>Crédit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+    
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">totaux</td>
+                                <td><span id="somme1"></span></td>
+                                <td><span id="somme2"></span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
             </div>
-            <div class="tab">
-                <table class="tbl" id="tbl" border="2px">
-                    <thead>
-                        <tr>
-                            <th>Transaction Code</th>
-                            <th>Account Code(Débit)</th>
-                            <th>Account Code(Crédit)</th>
-                            <th>Transaction Objet</th>
-                            <th>Débit</th>
-                            <th>Crédit</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="4">totaux</td>
-                            <td><span id="somme1"></span></td>
-                            <td><span id="somme2"></span></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            
         </div>
     </div>
     <div class="toolbar">
-        <footer>&copy; DEIVIED | SEYNABOOOO </footer>
+        <footer><center>&copy; DEIVIED | SEYNABOOOO </center></footer>
     </div>
     <script src="/log.dfa32a55.js" defer=""></script>
 </body>
